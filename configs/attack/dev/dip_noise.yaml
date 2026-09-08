@@ -1,0 +1,3 @@
+extends: _dev.yaml
+param: dip
+noise: {sigma0: 1.0e-4}

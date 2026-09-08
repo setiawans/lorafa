@@ -1,0 +1,27 @@
+checkpoints:
+  - checkpoints/finetune/resnet20_4_r16/epoch000.pt
+  - checkpoints/finetune/resnet20_4_r16/epoch030.pt
+dataset: cifar10
+data_root: data
+targets: {n: 100, offset: 0}
+
+obs_mode: lorafa        # lorafa | lorafa_fc | lora | full
+bn: eval                # BatchNorm mode of the client gradient. eval = frozen-BN protocol (matches
+                        # fine-tuning, where BN is entirely frozen); train = batch statistics (ablation)
+label: known            # the true label is given to the attacker (batch 1; iDLG-recoverable when fc is observed)
+init: random            # random | gt (pixel only)
+init_noise: 0.0         # gt only: std of Gaussian perturbation added to x* (normalized units)
+
+param: pixel            # pixel | dip
+lr: 0.01
+optimizer: adam         # pixel only: adam | sgd
+sign_grad: true         # pixel only: signed-gradient Adam (Geiping et al.); false = raw gradient
+tv_weight: 1.0e-4
+noise: {sigma0: 0.0}    # linear-decay Gaussian noise. pixel: std in normalized units
+                        # (0.05 ~ 0.013 in [0,1] pixels); dip: std added to generator weights
+dip: {z_channels: 32, hidden: 64}
+
+restarts: 5
+iters: 4000
+log_every: 100
+seed: 1234

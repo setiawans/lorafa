@@ -1,0 +1,3 @@
+extends: _init_sweep.yaml
+init_noise: 0.1        # x* + N(0, sigma^2), normalized units (x0.25 for [0,1] pixels).
+                        # sigma = 0 is not a fixed-point test: signed Adam moves every pixel by lr on step 1

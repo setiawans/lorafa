@@ -1,0 +1,5 @@
+extends: ../_base.yaml
+param: pixel
+init: gt
+restarts: 1             # one restart for every sigma: the same seed gives the same noise direction, so the
+                        # sweep is paired and no best-of-N selection confounds the trend across sigma

@@ -1,0 +1,19 @@
+backbone: checkpoints/backbone/resnet20_4_cifar100.pt
+dataset: cifar10
+data_root: data
+
+rank: 16
+alpha: 32.0
+adapt_first_conv: false
+lora_seed: 1234
+
+epochs: 30
+freeze_bn_stats: true   # FrozenBatchNorm: BN uses backbone running stats during fine-tuning, so only B and
+                        # fc change between checkpoints and the client gradient is a bn=eval gradient
+save_epochs: [0, 1, 5, 10, 30]
+batch_size: 64
+lr: 1.0e-3
+weight_decay: 0.0
+workers: 4
+amp: true
+seed: 1234

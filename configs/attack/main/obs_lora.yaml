@@ -1,0 +1,5 @@
+extends: ../_base.yaml
+param: pixel
+obs_mode: lora
+checkpoints:            # epoch 0 omitted: with B = 0 the A-gradient is identically zero, so lora == lorafa_fc there
+  - checkpoints/finetune/resnet20_4_r16/epoch030.pt

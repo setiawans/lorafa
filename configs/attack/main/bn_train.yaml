@@ -1,0 +1,3 @@
+extends: ../_base.yaml
+param: pixel
+bn: train               # ablation: client gradient computed with batch statistics over the single image

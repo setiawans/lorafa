@@ -1,0 +1,5 @@
+extends: ../_base.yaml
+targets: {n: 5, offset: 0}
+restarts: 5
+iters: 1000
+log_every: 50
