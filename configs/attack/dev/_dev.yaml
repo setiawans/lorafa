@@ -1,5 +1,11 @@
 extends: ../_base.yaml
-targets: {n: 2, offset: 0}
+checkpoints:
+  - checkpoints/finetune/resnet20_4_r16/epoch000.pt
+  - checkpoints/finetune/resnet20_4_r16/epoch001.pt
+  - checkpoints/finetune/resnet20_4_r16/epoch005.pt
+  - checkpoints/finetune/resnet20_4_r16/epoch010.pt
+  - checkpoints/finetune/resnet20_4_r16/epoch030.pt
+targets: {n: 2, offset: 100}
 restarts: 2
-iters: 1000
-log_every: 50
+iters: 4000
+log_every: 100
