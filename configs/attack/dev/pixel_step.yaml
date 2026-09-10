@@ -1,0 +1,3 @@
+extends: _dev.yaml
+param: pixel
+schedule: {type: step}

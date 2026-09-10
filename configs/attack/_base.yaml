@@ -16,6 +16,7 @@ param: pixel            # pixel | dip
 lr: 0.01
 optimizer: adam         # pixel only: adam | sgd
 sign_grad: true         # pixel only: signed-gradient Adam (Geiping et al.); false = raw gradient
+schedule: {type: none}  # none | step (milestones [0.375,0.625,0.875] of iters, gamma 0.1, Geiping) | cosine (lr_min)
 tv_weight: 1.0e-4
 noise: {sigma0: 0.0}    # linear-decay Gaussian noise. pixel: std in normalized units
                         # (0.05 ~ 0.013 in [0,1] pixels); dip: std added to generator weights

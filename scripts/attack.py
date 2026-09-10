@@ -66,6 +66,7 @@ def run_restart(model, cfg, norm, x_gt_norm, x_gt_raw, y, g_star, seed, dev, cur
         param.step(loss)
         if sigma0 > 0:
             param.inject_noise(linear_decay(sigma0, t, T))
+        param.end_step()
 
     recon = param.final_raw()
     return recon, time.time() - t0

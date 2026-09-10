@@ -1,0 +1,4 @@
+extends: _dev.yaml
+param: pixel
+schedule: {type: step}
+tv_weight: 1.0e-2

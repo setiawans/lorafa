@@ -9,12 +9,34 @@ from .data import Normalizer
 def linear_decay(sigma0: float, t: int, T: int) -> float:
     return sigma0 * (1.0 - t / max(T - 1, 1))
 
+def make_scheduler(opt, cfg: dict, T: int):
+    sched = cfg.get("schedule", {"type": "none"})
+    kind = sched.get("type", "none")
+    if kind == "none":
+        return None
+    if kind == "step":
+        milestones = [int(T * f) for f in sched.get("milestones", [0.375, 0.625, 0.875])]
+        return torch.optim.lr_scheduler.MultiStepLR(opt, milestones=milestones, gamma=sched.get("gamma", 0.1))
+    if kind == "cosine":
+        return torch.optim.lr_scheduler.CosineAnnealingLR(opt, T_max=T, eta_min=sched.get("lr_min", 0.0))
+    raise ValueError(f"unknown schedule {kind!r}")
+
 class Parameterization:
+    opt: torch.optim.Optimizer
+    sched = None
+
     def image(self) -> Tuple[torch.Tensor, torch.Tensor]:
         raise NotImplementedError
 
     def step(self, loss: torch.Tensor) -> None:
         raise NotImplementedError
+
+    def end_step(self) -> None:
+        if self.sched is not None:
+            self.sched.step()
+
+    def lr(self) -> float:
+        return self.opt.param_groups[0]["lr"]
 
     def inject_noise(self, sigma: float) -> None:
         raise NotImplementedError
@@ -25,7 +47,7 @@ class Parameterization:
 
 class PixelParam(Parameterization):
     def __init__(self, x0_norm: torch.Tensor, norm: Normalizer, lr: float,
-                 sign_grad: bool = True, optimizer: str = "adam"):
+                 sign_grad: bool = True, optimizer: str = "adam", cfg: Optional[dict] = None, T: int = 1):
         self.norm = norm
         self.sign_grad = sign_grad
         self.lo, self.hi = norm.bounds(x0_norm)
@@ -36,6 +58,7 @@ class PixelParam(Parameterization):
             self.opt = torch.optim.SGD([self.x], lr=lr)
         else:
             raise ValueError(f"unknown optimizer {optimizer!r}")
+        self.sched = make_scheduler(self.opt, cfg or {}, T)
 
     def image(self) -> Tuple[torch.Tensor, torch.Tensor]:
         return self.x, self.norm.denormalize(self.x)
@@ -93,11 +116,13 @@ class DIPGenerator(nn.Module):
         return torch.sigmoid(self.out(d1))
 
 class DIPParam(Parameterization):
-    def __init__(self, shape, norm: Normalizer, lr: float, z_channels: int, hidden: int, device):
+    def __init__(self, shape, norm: Normalizer, lr: float, z_channels: int, hidden: int, device,
+                 cfg: Optional[dict] = None, T: int = 1):
         self.norm = norm
         self.net = DIPGenerator(z_channels, hidden).to(device).train()
         self.z0 = torch.randn(shape[0], z_channels, *shape[-2:], device=device)
         self.opt = torch.optim.Adam(self.net.parameters(), lr=lr)
+        self.sched = make_scheduler(self.opt, cfg or {}, T)
 
     def image(self) -> Tuple[torch.Tensor, torch.Tensor]:
         raw = self.net(self.z0)
@@ -118,9 +143,11 @@ def make_param(cfg: dict, norm: Normalizer, shape, device, x0_norm: Optional[tor
     if kind == "pixel":
         if x0_norm is None:
             x0_norm = norm.normalize(torch.rand(*shape, device=device))
-        return PixelParam(x0_norm, norm, cfg["lr"], cfg.get("sign_grad", True), cfg.get("optimizer", "adam"))
+        return PixelParam(x0_norm, norm, cfg["lr"], cfg.get("sign_grad", True), cfg.get("optimizer", "adam"),
+                          cfg, cfg["iters"])
     if kind == "dip":
         if x0_norm is not None:
             raise ValueError("ground-truth initialization is only defined for param=pixel")
-        return DIPParam(shape, norm, cfg["lr"], cfg["dip"]["z_channels"], cfg["dip"]["hidden"], device)
+        return DIPParam(shape, norm, cfg["lr"], cfg["dip"]["z_channels"], cfg["dip"]["hidden"], device,
+                        cfg, cfg["iters"])
     raise ValueError(f"unknown param {kind!r}")
