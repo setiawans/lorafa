@@ -9,7 +9,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from lorafa.checkpoints import load_backbone, save_checkpoint, write_json  # noqa: E402
 from lorafa.data import Normalizer, get_dataset, get_loader, num_classes  # noqa: E402
-from lorafa.models import attach_lora, count_params, lora_B_params, lora_layers, replace_head  # noqa: E402
+from lorafa.models import attach_lora, build_model, count_params, lora_B_params, lora_layers, replace_head  # noqa: E402
 from lorafa.train import evaluate, run_epoch  # noqa: E402
 from lorafa.utils import CsvLogger, device, fmt_seconds, load_config, set_seed  # noqa: E402
 
@@ -25,8 +25,14 @@ def main():
     out_dir = Path(cfg["out_dir"])
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    backbone, bmeta = load_backbone(cfg["backbone"], dev)
-    norm = Normalizer.from_meta(bmeta)
+    if cfg["backbone"] == "random":
+        backbone = build_model(cfg["arch"], 1)
+        norm = Normalizer.for_dataset(cfg["norm_dataset"])
+        bmeta = {"arch": cfg["arch"], "norm_mean": list(norm.mean), "norm_std": list(norm.std),
+                 "pretrain_dataset": None, "final_test_acc": None}
+    else:
+        backbone, bmeta = load_backbone(cfg["backbone"], dev)
+        norm = Normalizer.from_meta(bmeta)
     n_cls = num_classes(cfg["dataset"])
 
     model = replace_head(backbone, n_cls)
