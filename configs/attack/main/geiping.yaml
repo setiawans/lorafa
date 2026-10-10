@@ -1,0 +1,4 @@
+extends: ../_base.yaml
+param: pixel
+sign_grad: true         # original Inverting Gradients recipe: signed-gradient Adam with weak TV
+tv_weight: 1.0e-4

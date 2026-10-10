@@ -1,0 +1,3 @@
+extends: _base.yaml
+out_dir: checkpoints/finetune/resnet18_r16
+backbone: checkpoints/backbone/resnet18_cifar100.pt

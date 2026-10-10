@@ -1,0 +1,5 @@
+extends: ../_base.yaml
+param: pixel
+checkpoints:            # untrained backbone: the regime of the earlier submission
+  - checkpoints/finetune/resnet20_4_r16_random/epoch000.pt
+  - checkpoints/finetune/resnet20_4_r16_random/epoch030.pt

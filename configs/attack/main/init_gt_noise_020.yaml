@@ -1,0 +1,2 @@
+extends: _init_sweep.yaml
+init_noise: 0.2

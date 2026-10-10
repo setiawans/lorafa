@@ -1,0 +1,4 @@
+extends: ../_base.yaml
+param: pixel
+obs_mode: lorafa_fc
+cosine: blocks

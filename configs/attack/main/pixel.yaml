@@ -1,0 +1,8 @@
+extends: ../_base.yaml
+param: pixel
+checkpoints:            # five checkpoints: how reconstructability changes over fine-tuning
+  - checkpoints/finetune/resnet20_4_r16/epoch000.pt
+  - checkpoints/finetune/resnet20_4_r16/epoch001.pt
+  - checkpoints/finetune/resnet20_4_r16/epoch005.pt
+  - checkpoints/finetune/resnet20_4_r16/epoch010.pt
+  - checkpoints/finetune/resnet20_4_r16/epoch030.pt

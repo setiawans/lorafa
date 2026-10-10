@@ -1,0 +1,6 @@
+extends: ../_base.yaml
+param: pixel
+targets: {n: 50, offset: 0}
+checkpoints:            # rank sets the dimension of the row space the server observes
+  - checkpoints/finetune/resnet20_4_r32/epoch000.pt
+  - checkpoints/finetune/resnet20_4_r32/epoch030.pt

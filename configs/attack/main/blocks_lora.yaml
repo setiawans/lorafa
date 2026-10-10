@@ -1,0 +1,6 @@
+extends: ../_base.yaml
+param: pixel
+obs_mode: lora
+cosine: blocks
+checkpoints:
+  - checkpoints/finetune/resnet20_4_r16/epoch030.pt

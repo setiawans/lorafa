@@ -1,0 +1,6 @@
+extends: ../_base.yaml
+param: pixel
+targets: {n: 50, offset: 0}
+checkpoints:            # second architecture, same protocol: deeper and wider backbone
+  - checkpoints/finetune/resnet18_r16/epoch000.pt
+  - checkpoints/finetune/resnet18_r16/epoch030.pt

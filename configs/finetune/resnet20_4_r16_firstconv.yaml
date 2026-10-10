@@ -1,0 +1,3 @@
+extends: _base.yaml
+out_dir: checkpoints/finetune/resnet20_4_r16_firstconv
+adapt_first_conv: true

@@ -1,0 +1,4 @@
+extends: ../_base.yaml
+param: pixel
+checkpoints:
+  - checkpoints/finetune/resnet20_4_r16_splice/fc1_b0.pt

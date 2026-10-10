@@ -1,0 +1,4 @@
+extends: dip.yaml
+cosine: concat
+checkpoints:
+  - checkpoints/finetune/resnet20_4_r16/epoch030.pt

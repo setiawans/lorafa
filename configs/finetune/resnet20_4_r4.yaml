@@ -1,0 +1,4 @@
+extends: _base.yaml
+out_dir: checkpoints/finetune/resnet20_4_r4
+rank: 4
+alpha: 8.0

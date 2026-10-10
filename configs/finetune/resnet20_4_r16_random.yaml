@@ -1,0 +1,5 @@
+extends: _base.yaml
+out_dir: checkpoints/finetune/resnet20_4_r16_random
+backbone: random        # untrained backbone (the setting of the earlier submission); epoch 0 is a random
+arch: resnet20_4        # network, epoch 30 is LoRA-FA + head trained on top of random frozen features
+norm_dataset: cifar100  # same normalization as the pretrained pipeline so only the weights differ

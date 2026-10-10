@@ -1,0 +1,6 @@
+extends: ../_base.yaml
+param: pixel
+targets: {n: 50, offset: 0}
+checkpoints:            # the input-adjacent convolution is adapted too, instead of staying frozen
+  - checkpoints/finetune/resnet20_4_r16_firstconv/epoch000.pt
+  - checkpoints/finetune/resnet20_4_r16_firstconv/epoch030.pt

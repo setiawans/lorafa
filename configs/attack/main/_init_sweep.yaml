@@ -1,0 +1,4 @@
+extends: ../_base.yaml
+param: pixel
+init: gt
+restarts: 1             # one restart per sigma: same seed gives the same noise direction, so paired

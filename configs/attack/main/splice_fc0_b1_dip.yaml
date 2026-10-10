@@ -1,0 +1,3 @@
+extends: dip.yaml
+checkpoints:
+  - checkpoints/finetune/resnet20_4_r16_splice/fc0_b1.pt

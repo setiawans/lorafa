@@ -1,0 +1,35 @@
+checkpoints:            # the checkpoints the reconstruction experiments use
+  - checkpoints/finetune/resnet20_4_r16/epoch000.pt
+  - checkpoints/finetune/resnet20_4_r16/epoch001.pt
+  - checkpoints/finetune/resnet20_4_r16/epoch005.pt
+  - checkpoints/finetune/resnet20_4_r16/epoch030.pt
+out_dir: runs/jacobian/resnet20_4_r16
+dataset: cifar10
+data_root: data
+targets: {n: 50, offset: 0}
+
+obs_mode: lorafa    
+bn: eval
+
+sigmas: [1.0e-6, 1.0e-5, 1.0e-4, 1.0e-3, 1.0e-2, 0.05, 0.1]
+fit_range: [1.0e-4, 0.05]
+probes: 16            
+probe_sigma: 0.05     
+count_flips: true    
+
+jacobian_images: 10
+jacobian_method: jvp    
+chunk: 512              
+thresholds: [1.0e-7, 1.0e-6, 1.0e-5, 1.0e-4, 1.0e-3, 1.0e-2]
+bands: 5              
+save_basis: true      
+
+projection_runs:
+  - main/pixel
+  - main/dip
+
+fd_images: 5
+fd_steps: [1.0e-7, 1.0e-6, 1.0e-5, 1.0e-4, 1.0e-3, 1.0e-2]
+fd_probes: 32
+
+seed: 1234

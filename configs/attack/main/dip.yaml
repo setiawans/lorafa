@@ -1,0 +1,9 @@
+extends: ../_base.yaml
+param: dip
+tv_weight: 1.0e-4       # strong TV blurs the DIP output; the generator already supplies smoothness
+checkpoints:            # five checkpoints: how reconstructability changes over fine-tuning
+  - checkpoints/finetune/resnet20_4_r16/epoch000.pt
+  - checkpoints/finetune/resnet20_4_r16/epoch001.pt
+  - checkpoints/finetune/resnet20_4_r16/epoch005.pt
+  - checkpoints/finetune/resnet20_4_r16/epoch010.pt
+  - checkpoints/finetune/resnet20_4_r16/epoch030.pt

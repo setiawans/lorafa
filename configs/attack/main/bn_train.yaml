@@ -1,0 +1,5 @@
+extends: ../_base.yaml
+param: pixel
+bn: train               # ablation: the client computes its gradient from batch statistics over the single
+                        # image instead of the frozen-BN statistics used by the main protocol
+targets: {n: 50, offset: 0}
